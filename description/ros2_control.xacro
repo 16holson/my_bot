@@ -1,31 +1,29 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot">
- 
-    <ros2_control name="GazeboSystem" type="system">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <ros2_control name="RealRobot" type="system">
         <hardware>
-            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        <plugin>roboclaw_hardware_interface/RoboClawHardwareInterface</plugin>
+            <param name="serial_port">/dev/roboclaw</param>
+            <param name="serial_baud" type="int">115200</param>
         </hardware>
         <joint name="left_wheel_joint">
-            <command_interface name="velocity">
-                <param name="min">-10</param>
-                <param name="max">10</param>
-            </command_interface>
-            <state_interface name="velocity"/>
-            <state_interface name="position"/>
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <param name="address">128</param>
+        <!--motor types must be one of M1 or M2-->
+        <param name="motor_type">M1</param>
+        <!-- Number of encoder ticks per wheel rotation -->
+        <param name="qppr">386</param>
         </joint>
         <joint name="right_wheel_joint">
-            <command_interface name="velocity">
-                <param name="min">-10</param>
-                <param name="max">10</param>
-            </command_interface>
-            <state_interface name="velocity"/>
-            <state_interface name="position"/>
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <param name="address">128</param>
+        <!--motor types must be one of M1 or M2-->
+        <param name="motor_type">M2</param>
+        <!-- Number of encoder ticks per wheel rotation -->
+        <param name="qppr">386</param>
         </joint>
     </ros2_control>
-
-    <gazebo>
-        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-            <parameters>$(find my_bot)/config/my_controllers.yaml</parameters>
-        </plugin>
-    </gazebo>
 </robot>
