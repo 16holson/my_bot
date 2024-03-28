@@ -8,22 +8,22 @@
             <param name="serial_baud" type="int">115200</param>
         </hardware>
         <joint name="left_wheel_joint">
-        <command_interface name="velocity"/>
-        <state_interface name="position"/>
-        <param name="address">128</param>
-        <!--motor types must be one of M1 or M2-->
-        <param name="motor_type">M1</param>
-        <!-- Number of encoder ticks per wheel rotation -->
-        <param name="qppr">386</param>
+            <command_interface name="velocity"/>
+            <state_interface name="position"/>
+            <param name="address">128</param>
+            <!--motor types must be one of M1 or M2-->
+            <param name="motor_type">M1</param>
+            <!-- Number of encoder ticks per wheel rotation -->
+            <param name="qppr">400</param>
         </joint>
         <joint name="right_wheel_joint">
-        <command_interface name="velocity"/>
-        <state_interface name="position"/>
-        <param name="address">128</param>
-        <!--motor types must be one of M1 or M2-->
-        <param name="motor_type">M2</param>
-        <!-- Number of encoder ticks per wheel rotation -->
-        <param name="qppr">386</param>
+            <command_interface name="velocity"/>
+            <state_interface name="position"/>
+            <param name="address">128</param>
+            <!--motor types must be one of M1 or M2-->
+            <param name="motor_type">M2</param>
+            <!-- Number of encoder ticks per wheel rotation -->
+            <param name="qppr">400</param>
         </joint>
     </ros2_control>
 </robot>
