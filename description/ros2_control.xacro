@@ -14,7 +14,7 @@
             <!--motor types must be one of M1 or M2-->
             <param name="motor_type">M1</param>
             <!-- Number of encoder ticks per wheel rotation -->
-            <param name="qppr">400</param>
+            <param name="qppr">399</param>
         </joint>
         <joint name="right_wheel_joint">
             <command_interface name="velocity"/>
@@ -23,7 +23,7 @@
             <!--motor types must be one of M1 or M2-->
             <param name="motor_type">M2</param>
             <!-- Number of encoder ticks per wheel rotation -->
-            <param name="qppr">400</param>
+            <param name="qppr">399</param>
         </joint>
     </ros2_control>
 </robot>

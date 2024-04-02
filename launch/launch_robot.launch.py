@@ -28,6 +28,31 @@ def generate_launch_description():
                 )]), launch_arguments={'use_ros2_control': 'true'}.items()
     )
 
+    joystick = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory(package_name), 'launch', 'joystick_launch.py'
+        )]), launch_arguments={'use_sim_time': 'false'}.items()
+    )
+
+    lidar = LaunchDescription([
+        Node(
+            package="lightwarelidar2",
+            namespace="laser_frame",
+            executable="sf45b",
+            name="laser_frame",
+            # parameters=[{'port': '/dev/ttyUSB0', 'updateRate': 2}]
+            parameters=[{'lowAngleLimit': -160, 'highAngleLimit': 160,  'port': '/dev/ttyUSB0', 'updateRate': 2}]
+        )
+    ])
+
+    twist_mux_params = os.path.join(get_package_share_directory(package_name), 'config', 'twist_mux.yaml')
+    twist_mux = Node(
+        package="twist_mux",
+        executable="twist_mux",
+        parameters=[twist_mux_params, {'use_sim_time': False}],
+        remappings=[('/cmd_vel_out', '/diff_cont/cmd_vel_unstamped')]
+    )
+
 
     robot_description = Command(['ros2 param get --hide-type /robot_state_publisher robot_description'])
     controller_params_file = os.path.join(get_package_share_directory(package_name), 'config', 'my_controllers.yaml')
@@ -48,7 +73,8 @@ def generate_launch_description():
         package='pointcloud_to_laserscan',
         executable='pointcloud_to_laserscan_node',
         remappings=[('cloud_in', [LaunchConfiguration(variable_name='scanner'), '/pointcloud']),
-                    ('scan', [LaunchConfiguration(variable_name='scanner'), '/test'])],
+                    ('scan', '/scan')],
+                    # ('scan', [LaunchConfiguration(variable_name='scanner'), '/test'])],
         parameters=[{
             'target_frame': 'laser_frame',
             'transform_tolerance': 0.01,
@@ -59,7 +85,7 @@ def generate_launch_description():
             'angle_increment': 0.0087,  # M_PI/360.0
             'scan_time': 0.3333,
             'range_min': 0.0,
-            'range_max': 4.0,
+            'range_max': 50.0,
             'use_inf': True,
             'inf_epsilon': 1.0
         }],
@@ -97,9 +123,12 @@ def generate_launch_description():
 
     # Launch them all!
     return LaunchDescription([
-        scanner_arg,
         rsp,
+        joystick,
+        twist_mux,
+        #lidar,
         delayed_controller_manager,
+        scanner_arg,
         pointcloud_to_laserscan,
         delayed_diff_drive_spawner,
         delayed_joint_broad_spawner,
