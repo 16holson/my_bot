@@ -4,19 +4,18 @@
     <xacro:include filename="inertial_macros.xacro"/>
 
 
-    <xacro:property name="chassis_length" value="0.15"/>
-    <xacro:property name="chassis_width" value="0.255"/>
-    <xacro:property name="chassis_height" value="0.06"/>
+    <xacro:property name="chassis_radius" value="0.17"/>
+    <xacro:property name="chassis_height" value="0.08535"/>
     <xacro:property name="chassis_mass" value="1.0"/>
-    <xacro:property name="wheel_radius" value="0.075863"/>
+    <xacro:property name="wheel_radius" value="0.0415"/>
     <xacro:property name="wheel_thickness" value="0.015"/>
     <xacro:property name="wheel_mass" value="0.08"/>
     <xacro:property name="wheel_offset_x" value="0.0"/>
-    <xacro:property name="wheel_offset_y" value="0.135"/>
-    <xacro:property name="wheel_offset_z" value="0.00"/>
-    <xacro:property name="caster_wheel_radius" value="0.025"/>
+    <xacro:property name="wheel_offset_y" value="0.14265"/>
+    <xacro:property name="wheel_offset_z" value="-0.01"/>
+    <xacro:property name="caster_wheel_radius" value="0.00925"/>
     <xacro:property name="caster_wheel_mass" value="0.01"/>
-    <xacro:property name="caster_wheel_offset_x" value="0.05"/>
+    <xacro:property name="caster_wheel_offset_x" value="0.139"/>
     <xacro:property name="caster_wheel_offset_z" value="${wheel_offset_z - wheel_radius + caster_wheel_radius}"/>
 
     <material name="white">
@@ -68,21 +67,21 @@
     <link name="chassis">
         <visual>
             <origin xyz="0 0 0"/>
-            <!-- <origin xyz="${chassis_length/2} 0 ${chassis_height/2}"/> -->
+            <!-- <origin xyz="${chassis_radius} 0 ${chassis_height/2}"/> -->
             <geometry>
-                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+                <cylinder radius="${chassis_radius}" length="${chassis_height}"/>
             </geometry>
             <material name="orange"/>
         </visual>
         <collision>
-            <origin xyz="${chassis_length/2} 0 ${chassis_height/2}"/>
+            <origin xyz="${chassis_radius} 0 ${chassis_height/2}"/>
             <geometry>
-                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+                <cylinder radius="${chassis_radius}" length="${chassis_height}"/>
             </geometry>
         </collision>
-        <xacro:inertial_box mass="0.5" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
-            <origin xyz="${chassis_length/2} 0 ${chassis_height/2}" rpy="0 0 0"/>
-        </xacro:inertial_box>
+        <xacro:inertial_cylinder mass="0.5" length="${chassis_height}" radius="${chassis_radius}">
+            <origin xyz="${chassis_radius} 0 ${chassis_height/2}" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
     </link>
 
     <gazebo reference="chassis">
@@ -218,5 +217,13 @@
     </gazebo>
 
 </robot>
+
+
+
+
+
+
+
+
 
 
